@@ -52,6 +52,10 @@ export default function LandingPage() {
             {loading ? 'Memproses...' : 'Masuk'}
           </button>
         </form>
+        <p className="mt-4 text-center">
+        Belum punya akun?{' '}
+        <a href="/register" className="text-blue-600 hover:underline">Daftar</a>
+        </p>
       </div>
     </div>
   )
