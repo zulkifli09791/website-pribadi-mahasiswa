@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import { useEffect, useState } from 'react'
-import DarkModeToggle from './DarkModeToggle'
 
 export default function Navbar() {
   const path = usePathname()
@@ -56,7 +55,6 @@ export default function Navbar() {
               {item.label}
             </Link>
           ))}
-          <DarkModeToggle />
           <button
             onClick={handleLogout}
             className="text-red-500 hover:underline text-sm dark:text-red-400"
