@@ -29,13 +29,15 @@ export default function HomePage() {
         {/* Header Section */}
         <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-2xl p-8 md:p-12 mb-8">
           <div className="flex flex-col md:flex-row items-center gap-6">
-            <Image
+            {/* Profile image removed as per user request */}
+            {/* Profile image removed as per user request */}
+            {/* <Image
               src="/assets/profile.jpg"
               alt="Profile"
               width={120}
               height={120}
               className="rounded-full border-4 border-white shadow-lg"
-            />
+            /> */}
             <div className="text-center md:text-left">
               <h1 className="text-3xl md:text-4xl font-bold mb-2">Halo, {username}!</h1>
               <p className="text-lg opacity-90 mb-2">Selamat datang di portofolio pribadi Anda</p>

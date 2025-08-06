@@ -122,7 +122,9 @@ export default function IPKPage() {
                           updated[semIdx][idx].credits = parseInt(e.target.value) || 3
                           setSemesters(updated)
                         }}
-                        className="p-1 w-16 border rounded"
+                        className="p-1 w-16 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                        min="1"
+                        max="6"
                       />
                     </td>
                     <td>
