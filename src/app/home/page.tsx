@@ -40,9 +40,9 @@ export default function HomePage() {
             /> */}
             <div className="text-center md:text-left">
               <h1 className="text-3xl md:text-4xl font-bold mb-2">Halo, {username}!</h1>
-              <p className="text-lg opacity-90 mb-2">Selamat datang di portofolio pribadi Anda</p>
+              <p className="text-lg opacity-90 mb-2">Selamat datang di Website pribadi Anda</p>
               <p className="opacity-80 max-w-lg">
-                Di sini Anda bisa mengelola proyek, nilai IPK, dan kenangan tiap semester dengan mudah.
+                Di sini Anda bisa menyimpan proyek, nilai IPK, dan kenangan tiap semester dengan mudah.
               </p>
             </div>
           </div>
