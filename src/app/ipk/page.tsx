@@ -114,18 +114,28 @@ export default function IPKPage() {
                       />
                     </td>
                     <td>
-                      <input
-                        type="number"
-                        value={c.credits}
-                        onChange={(e) => {
-                          const updated = [...semesters]
-                          updated[semIdx][idx].credits = parseInt(e.target.value) || 3
-                          setSemesters(updated)
-                        }}
-                        className="p-1 w-16 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                        min="1"
-                        max="6"
-                      />
+                    <input
+                      type="number"
+                      value={c.credits ?? ''}
+                      onChange={(e) => {
+                        const newValue = e.target.value
+                        const updated = [...semesters]
+                        // Biarkan kosong saat diketik kosong
+                        updated[semIdx][idx].credits = newValue === '' ? '' : parseInt(newValue)
+                        setSemesters(updated)
+                      }}
+                      onBlur={(e) => {
+                        const updated = [...semesters]
+                        const val = parseInt(e.target.value)
+                        // Saat keluar dari input (blur), set default jika kosong
+                        updated[semIdx][idx].credits = isNaN(val) ? 3 : val
+                        setSemesters(updated)
+                      }}
+                      className="p-1 w-16 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                      min="1"
+                      max="6"
+                    />
+
                     </td>
                     <td>
                       <select
