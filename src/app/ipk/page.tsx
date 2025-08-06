@@ -64,21 +64,40 @@ export default function IPKPage() {
 
   const saveAll = async () => {
     if (!userId) return
-    for (let i = 0; i < semesters.length; i++) {
-      for (const course of semesters[i]) {
-        if (!course.id && course.course) {
-          await supabase.from('ipk').insert({
-            semester: i + 1,
-            course: course.course,
-            credits: course.credits,
-            grade: course.grade,
-            user_id: userId,
-          })
+    
+    try {
+      for (let i = 0; i < semesters.length; i++) {
+        for (const course of semesters[i]) {
+          if (course.course && course.course.trim() !== '') {
+            if (!course.id) {
+              // Insert new course
+              await supabase.from('ipk').insert({
+                semester: i + 1,
+                course: course.course.trim(),
+                credits: course.credits || 3,
+                grade: course.grade || 'B',
+                user_id: userId,
+              })
+            } else {
+              // Update existing course
+              await supabase
+                .from('ipk')
+                .update({
+                  course: course.course.trim(),
+                  credits: course.credits || 3,
+                  grade: course.grade || 'B',
+                })
+                .eq('id', course.id)
+            }
+          }
         }
       }
+      alert('Data IPK berhasil disimpan!')
+      fetchIPK(userId)
+    } catch (error) {
+      console.error('Error saving IPK:', error)
+      alert('Terjadi kesalahan saat menyimpan data IPK!')
     }
-    alert('Data IPK berhasil disimpan!')
-    fetchIPK(userId)
   }
 
   if (loading) return <p className="text-center py-10">Memuat...</p>
