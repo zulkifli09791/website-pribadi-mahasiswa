@@ -38,6 +38,16 @@ export default function ProjectsPage() {
     return data.publicUrl
   }
 
+  const handleDelete = async (id: number) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus proyek ini?')) return
+    const { error } = await supabase.from('projects').delete().eq('id', id)
+    if (error) {
+      alert('Gagal menghapus proyek: ' + error.message)
+    } else {
+      fetchProjects(userId!)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!userId) return
@@ -67,12 +77,19 @@ export default function ProjectsPage() {
         {/* Daftar Proyek */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {projects.map((p) => (
-            <div key={p.id} className="bg-white rounded-lg overflow-hidden shadow">
+            <div key={p.id} className="bg-white rounded-lg overflow-hidden shadow relative">
               {p.image_url && <img src={p.image_url} alt={p.name} className="w-full h-48 object-cover" />}
               <div className="p-4">
                 <h3 className="text-xl font-semibold">{p.name}</h3>
                 <p className="text-gray-600">{p.description}</p>
                 {p.link && <a href={p.link} target="_blank" rel="noopener" className="text-blue-600">Lihat →</a>}
+                <button
+                  onClick={() => handleDelete(p.id)}
+                  className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700 transition"
+                  aria-label={`Hapus proyek ${p.name}`}
+                >
+                  Hapus
+                </button>
               </div>
             </div>
           ))}
