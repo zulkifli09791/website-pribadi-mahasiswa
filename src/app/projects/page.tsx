@@ -53,25 +53,28 @@ export default function ProjectsPage() {
 
   // Upload gambar ke Supabase Storage
   const uploadImage = async (): Promise<string | null> => {
-    if (!file) return null
+    if (!file) return null;
 
-    const filePath = `projects/${Date.now()}-${file.name}`
+    const filePath = `projects/${Date.now()}-${file.name}`;
+
     const { error: uploadError } = await supabase
       .storage
-      .from('project-images')
-      .upload(filePath, file, { upsert: true })
+      .from('project-images') // nama bucket harus sama
+      .upload(filePath, file, {
+        upsert: true // izinkan timpa file
+      });
 
     if (uploadError) {
-      throw new Error('Upload gagal: ' + uploadError.message)
+      throw new Error('Upload gagal: ' + uploadError.message);
     }
 
     const { data } = supabase
       .storage
       .from('project-images')
-      .getPublicUrl(filePath)
+      .getPublicUrl(filePath);
 
-    return data.publicUrl
-  }
+    return data.publicUrl;
+  };
 
   // Hapus proyek
   const handleDelete = async (id: number | string) => {
