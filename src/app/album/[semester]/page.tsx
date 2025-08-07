@@ -77,6 +77,44 @@ export default function SemesterAlbum() {
     }
   }
 
+  const handleDelete = async (photo: { image: string; description: string }) => {
+  if (!confirm('Apakah Anda yakin ingin menghapus foto ini?')) return;
+
+  const imagePath = photo.image?.split('/album-photos/')?.[1];
+  if (!imagePath) {
+    alert('Gagal menghapus: path gambar tidak valid');
+    return;
+  }
+
+  const fullPath = `album-photos/${semester}/${imagePath}`;
+
+  // 1. Hapus dari Supabase Storage
+  const { error: storageError } = await supabase.storage
+    .from('album-photos')
+    .remove([fullPath]);
+
+  if (storageError) {
+    alert('Gagal hapus dari storage: ' + storageError.message);
+    return;
+  }
+
+  // 2. Hapus dari database (tabel `album`)
+  const { error: dbError } = await supabase
+    .from('album')
+    .delete()
+    .eq('image_url', photo.image)
+    .eq('user_id', userId)
+    .eq('semester', semester);
+
+  if (dbError) {
+    alert('Gagal hapus dari database: ' + dbError.message);
+    return;
+  }
+
+  // 3. Update state
+  setPhotos(photos.filter(p => p.image !== photo.image));
+};
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 py-8 px-4">
       <div className="max-w-7xl mx-auto">
@@ -96,6 +134,7 @@ export default function SemesterAlbum() {
                 image={photo.image}
                 description={photo.description}
                 alt={`Foto ${index + 1} - ${photo.description}`}
+                onDelete={() => handleDelete(photo)}
               />
             ))}
           </div>
